@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.HashSet;
 import java.util.Set;
+
 
 @Component
 public class DataInit {
@@ -26,21 +28,15 @@ public class DataInit {
         roleService.addRole(new Role("ROLE_ADMIN"));
         roleService.addRole(new Role("ROLE_USER"));
 
-        User user1 = new User();
-        user1.setUsername("admin");
-        user1.setLastName("admin");
-        user1.seteMail("admin@mail");
-        user1.setPassword("1234");
-        user1.setRoles(Set.of(roleService.getRoleByName("ROLE_ADMIN"),
-                roleService.getRoleByName("ROLE_USER")));
+        HashSet<Role> roles1 = new HashSet<>();
+        roles1.add(roleService.getRoleByName("ROLE_ADMIN"));
+        roles1.add(roleService.getRoleByName("ROLE_USER"));
+        User user1 = new User("admin","admin","admin@mail","1234", roles1);
         userService.addUser(user1);
 
-        User user2 =new User();
-        user2.setUsername("alex");
-        user2.setLastName("alex");
-        user2.seteMail("alex@mail");
-        user2.setPassword("alex");
-        user2.setRoles(Set.of(roleService.getRoleByName("ROLE_USER")));
+        HashSet<Role> roles2 = new HashSet<>();
+        roles2.add(roleService.getRoleByName("ROLE_USER"));
+        User user2 = new User("alex","alex","alex@mail","alex", roles2);
         userService.addUser(user2);
     }
 }

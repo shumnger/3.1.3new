@@ -1,19 +1,20 @@
 package SpringBootCRUD.service;
 
-
-import SpringBootCRUD.model.User;
 import SpringBootCRUD.dao.UserRepository;
-
+import SpringBootCRUD.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     private UserRepository userRepository;
 
@@ -24,11 +25,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public void updateUser(User user) {
+        if (!user.getPassword().equals(getUserById(user.getId()).getPassword())) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         userRepository.save(user);
     }
 
@@ -38,8 +44,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> getUserById(long id) {
-        return userRepository.findById(id);
+    public User getUserById(long id) {
+        return userRepository.getUserById(id);
     }
 
     @Override

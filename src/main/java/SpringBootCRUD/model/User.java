@@ -1,7 +1,5 @@
 package SpringBootCRUD.model;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -39,8 +37,7 @@ public class User implements UserDetails {
     @Column
     private String password;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @Fetch(FetchMode.JOIN)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Role> roles;
@@ -56,9 +53,19 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public User(String username, String lastName, String email, String password,
+                Set<Role> roles) {
+        this.username = username;
+        this.lastName = lastName;
+        this.eMail = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
     public User() {
 
     }
+
 
     public long getId() {
         return id;
