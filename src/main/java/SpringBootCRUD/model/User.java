@@ -1,5 +1,7 @@
 package SpringBootCRUD.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -23,32 +25,35 @@ public class User implements UserDetails {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "username")
     private String username;
 
-    @Column(name = "LastName")
+    @Column(name = "lastName")
     private String lastName;
 
     @Column(name = "eMail")
-    private String eMail;
+    private String email;
 
     @Column
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @Fetch(FetchMode.JOIN)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "users_id"),
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private Set<Role> roles;
 
+    public User() {
+    }
 
     public User(Long id, String username, String lastName, String email, String password,
                 Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.lastName = lastName;
-        this.eMail = email;
+        this.email = email;
         this.password = password;
         this.roles = roles;
     }
@@ -57,21 +62,16 @@ public class User implements UserDetails {
                 Set<Role> roles) {
         this.username = username;
         this.lastName = lastName;
-        this.eMail = email;
+        this.email = email;
         this.password = password;
         this.roles = roles;
     }
 
-    public User() {
-
-    }
-
-
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -87,12 +87,12 @@ public class User implements UserDetails {
         this.lastName = lastName;
     }
 
-    public String geteMail() {
-        return eMail;
+    public String getEmail() {
+        return email;
     }
 
-    public void seteMail(String eMail) {
-        this.eMail = eMail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setPassword(String password) {
@@ -148,7 +148,7 @@ public class User implements UserDetails {
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", eMail='" + eMail + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +
                 '}';

@@ -1,17 +1,14 @@
 package SpringBootCRUD.service;
 
 
-import SpringBootCRUD.dao.RoleRepository;
 import SpringBootCRUD.model.Role;
-
+import SpringBootCRUD.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
 
     private RoleRepository roleRepository;
@@ -43,6 +40,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRoleByName(String name) {
-        return roleRepository.getRoleByName(name);
+        return roleRepository.findByName(name);
     }
 }

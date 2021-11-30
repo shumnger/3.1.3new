@@ -1,5 +1,6 @@
 package SpringBootCRUD.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -17,23 +18,22 @@ public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "role")
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    public Role(long id, String name) {
+    public Role(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
     public Role(String name) {
-       this.name = name;
+        this.name = name;
     }
 
     public Role() {
@@ -43,7 +43,7 @@ public class Role implements GrantedAuthority {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
